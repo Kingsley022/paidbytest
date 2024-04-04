@@ -7,7 +7,6 @@ import { Button } from '@chakra-ui/react'
 
 const TableData = ({data, refetch={refetch}}) => {
 
-    const[isDeleting, setIsDeleting] = useState(false);
     const[selectedColumn, setSelectedColumn] = useState(null);
 
     // Pagination
@@ -22,7 +21,7 @@ const TableData = ({data, refetch={refetch}}) => {
     };
 
 
-    // Deleting Data
+    // Deleting Data(cell)
     const handleDelete = async (id) => {
         try {
             setSelectedColumn(id);

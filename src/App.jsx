@@ -1,14 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import Navbar from "./components/Navbar"
 import TableData from "./components/Table"
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import Filter from './components/Filter';
+import SkeletonComponent from './components/Skeleton';
 
 const App = () => {
+  const [searchValue, setSearchValue] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
-  const[searchValue, setSearchValue] = useState('');
-
-  // Fetching Data(All)
-  const{data:customers, refetch} = useQuery({
+  const { data: customers, refetch, isLoading:loading} = useQuery({
     queryKey: ['customers'], 
     queryFn: async () => {
         const response = await fetch('https://api-generator.retool.com/gx8Ukr/paidbytest');
@@ -17,25 +18,37 @@ const App = () => {
     }}
   );
 
-  // Fetching Data(search)
-  const{data:searchData} = useQuery({
+  const { data: searchData, isLoading } = useQuery({
     queryKey: ['search', searchValue], 
     queryFn: async () => {
         const response = await fetch(`https://api-generator.retool.com/gx8Ukr/paidbytest?Column 1=${searchValue}`);
         const data = await response.json();
         return data
     },
-    enabled: !!searchValue}
-  );
-  
-  // Main Data
-  const data = searchData?.length > 0 ? searchData : customers;
+    enabled: !!searchValue
+  });
+
+  useEffect(() => {
+    let filtered = searchData || customers;
+
+    if (filteredData?.length > 0) {
+      filtered = filteredData;
+    }
+
+    if(searchData){
+      filtered = searchData
+    }
+
+    setFilteredData(filtered);
+  }, [searchData, customers, filteredData]);
+
   return (
     <>
-      <Navbar customers={data} setSearchValue={setSearchValue}/>
-      <TableData data={data} refetch={refetch}/>
-    </>     
+      <Navbar customers={customers} setSearchValue={setSearchValue} isLoading={isLoading}/>
+      <Filter data={customers} setFilteredData={setFilteredData}/>
+      {(isLoading || loading) ? <SkeletonComponent/> : <TableData data={filteredData} refetch={refetch} isLoading={loading}/>}
+    </>
   )
 }
 
-export default App
+export default App;
