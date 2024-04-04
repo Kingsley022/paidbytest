@@ -39,7 +39,7 @@ const TableData = ({data, refetch={refetch}}) => {
   return (
     <>
         <TableContainer className=''>
-            <Table variant='striped' colorScheme='gray'>
+            <Table variant='striped' colorScheme='gray' className=''>
                 <Thead>
                     <Tr>
                         <Th>ID</Th>
