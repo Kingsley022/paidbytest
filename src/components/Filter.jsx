@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BsChevronDown } from 'react-icons/bs';
 
 
-const Filter = ({data, setFilteredData, locations}) => {
+const Filter = ({data, setFilteredData, locations,  setIsFilterClicked}) => {
     const[orderBy, setOrderBy] = useState("");
 
     const columns=[
@@ -48,11 +48,20 @@ const Filter = ({data, setFilteredData, locations}) => {
                 </MenuList>
             </Menu>
 
-            <div className="flex gap-2">
-                {locations && locations?.map(location => (
-                    <p className="font-semibold bg-slate-100 p-3 rounded">{location}</p>
-                ))}
-            </div>
+            {locations?.length > 0 && (
+                <div className="flex items-center gap-2">
+
+                    <div className="flex gap-2">
+                        {locations?.map(location => (
+                            <p className="font-semibold bg-slate-100 p-3 rounded" key={location}>{location}</p>
+                        ))}
+                    </div>
+
+                    <Button colorScheme='teal' size='xs' onClick={() => setIsFilterClicked(true)}>FILTER</Button>
+                </div>
+            )}     
+            
+
         </ div>
     );
 

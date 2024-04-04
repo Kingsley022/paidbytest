@@ -75,7 +75,8 @@ const TableData = ({data, refetch={refetch}, setLocations, locations}) => {
                                     loadingText='Deleting'
                                     colorScheme='teal'
                                     variant='outline'
-                                ></Button>: <Button colorScheme='red' onClick={() => handleDelete(customer?.id)}>Delete</Button>}
+                                    size='sm'
+                                ></Button>: <Button size='sm' colorScheme='red' onClick={() => handleDelete(customer?.id)}>Delete</Button>}
                             </Td>
                         </Tr>
                     ))}
