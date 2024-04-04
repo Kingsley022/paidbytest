@@ -38,6 +38,7 @@ const App = () => {
     }
 
     if(searchData){
+      setIsFilterClicked(false);
       filtered = searchData
     }
 
