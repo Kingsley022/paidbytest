@@ -4,6 +4,8 @@ import { BsChevronDown } from 'react-icons/bs';
 
 
 const Filter = ({data, setFilteredData}) => {
+    const[orderBy, setOrderBy] = useState("");
+
     const columns=[
         {
             label: "Name",
@@ -27,9 +29,10 @@ const Filter = ({data, setFilteredData}) => {
         }
     ];
 
-    const handleSort = (columnName) => {
+    const handleSort = (column) => {
+        setOrderBy(column.label)
         const sortedData = [...data].sort((a, b) => {
-          return a[columnName].localeCompare(b[columnName]);
+          return a[column.columnName].localeCompare(b[column.columnName]);
         });
         setFilteredData(sortedData);
       };
@@ -37,10 +40,10 @@ const Filter = ({data, setFilteredData}) => {
     return (
         <>
             <Menu>
-                <MenuButton as={Button} rightIcon={<BsChevronDown/>} className="m-4">{ 'Filter Table'}</MenuButton>
+                <MenuButton as={Button} rightIcon={<BsChevronDown/>} className="m-4">ORDER BY{orderBy && ` : ${orderBy.toLocaleUpperCase()}`}</MenuButton>
                 <MenuList>
                     {columns?.map(column =>(
-                        <MenuItem key={column.label} onClick={() => handleSort(column.columnName)}>{column.label}</MenuItem>
+                        <MenuItem key={column.label} onClick={() => handleSort(column)}>{column.label}</MenuItem>
                     ))}
                 </MenuList>
             </Menu>
