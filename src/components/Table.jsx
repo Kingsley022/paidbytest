@@ -5,7 +5,7 @@ import axios from 'axios';
 import { Button } from '@chakra-ui/react'
 
 
-const TableData = ({data, refetch={refetch}}) => {
+const TableData = ({data, refetch={refetch}, setLocations, locations}) => {
 
     const[selectedColumn, setSelectedColumn] = useState(null);
 
@@ -20,22 +20,26 @@ const TableData = ({data, refetch={refetch}}) => {
         setCurrentPage(selected);
     };
 
+    const handleLocationUpdate = (newLocation) => {
+        if (!locations.includes(newLocation) && locations.length < 3) {
+            const newLocations = [...locations, newLocation];
+            setLocations(newLocations);
+        }
+    }
 
     // Deleting Data(cell)
     const handleDelete = async (id) => {
         try {
             setSelectedColumn(id);
-            setIsDeleting(true);
             await axios.delete(`https://api-generator.retool.com/gx8Ukr/paidbytest/${id}`);
             refetch();
         }catch (error) {
           console.error('Error deleting data:', error);
         }finally{
-            setIsDeleting(false)
+            setSelectedColumn(null);
         }
     };
       
-
   return (
     <>
         <TableContainer className=''>
@@ -57,7 +61,11 @@ const TableData = ({data, refetch={refetch}}) => {
                         <Tr key={customer.id}>
                             <Td>{customer.id}</Td>
                             <Td>{customer['Column 1']}</Td>
-                            <Td>{customer['Column 2']}</Td>
+                            <Td 
+                                className='hover:text-red-600 cursor-pointer'
+                                onClick={()=> handleLocationUpdate(customer['Column 2'])}>
+                                {customer['Column 2']}
+                            </Td>
                             <Td>{customer['Column 3']}</Td>
                             <Td>{customer['Column 5']}</Td>
                             <Td>{customer['Column 6']}</Td>

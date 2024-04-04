@@ -8,6 +8,7 @@ import SkeletonComponent from './components/Skeleton';
 const App = () => {
   const [searchValue, setSearchValue] = useState('');
   const [filteredData, setFilteredData] = useState([]);
+  const [selectedLocations, setSelectLocations] = useState([]);
 
   const { data: customers, refetch, isLoading:loading} = useQuery({
     queryKey: ['customers'], 
@@ -39,14 +40,20 @@ const App = () => {
       filtered = searchData
     }
 
+    if (selectedLocations.length > 0) {
+      filtered = filtered.filter(customer => selectedLocations.includes(customer["Column 2"]));
+    }
+
     setFilteredData(filtered);
-  }, [searchData, customers, filteredData]);
+  }, [searchData, customers, filteredData, selectedLocations]);
+
+
 
   return (
     <>
       <Navbar customers={customers} setSearchValue={setSearchValue} isLoading={isLoading}/>
-      <Filter data={customers} setFilteredData={setFilteredData}/>
-      {(isLoading || loading) ? <SkeletonComponent/> : <TableData data={filteredData} refetch={refetch} isLoading={loading}/>}
+      <Filter data={customers} setFilteredData={setFilteredData} locations={selectedLocations}/>
+      {(isLoading || loading) ? <SkeletonComponent/> : <TableData data={filteredData} refetch={refetch} isLoading={loading} setLocations={setSelectLocations} locations={selectedLocations}/>}
     </>
   )
 }

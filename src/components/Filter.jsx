@@ -3,7 +3,7 @@ import { useState } from "react";
 import { BsChevronDown } from 'react-icons/bs';
 
 
-const Filter = ({data, setFilteredData}) => {
+const Filter = ({data, setFilteredData, locations}) => {
     const[orderBy, setOrderBy] = useState("");
 
     const columns=[
@@ -38,7 +38,7 @@ const Filter = ({data, setFilteredData}) => {
       };
 
     return (
-        <>
+        <div className="flex gap-8 items-center">
             <Menu>
                 <MenuButton as={Button} rightIcon={<BsChevronDown/>} className="m-4">ORDER BY{orderBy && ` : ${orderBy.toLocaleUpperCase()}`}</MenuButton>
                 <MenuList>
@@ -47,7 +47,13 @@ const Filter = ({data, setFilteredData}) => {
                     ))}
                 </MenuList>
             </Menu>
-        </>
+
+            <div className="flex gap-2">
+                {locations && locations?.map(location => (
+                    <p className="font-semibold bg-slate-100 p-3 rounded">{location}</p>
+                ))}
+            </div>
+        </ div>
     );
 
 }
