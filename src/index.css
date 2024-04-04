@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.list-icon::-webkit-calendar-picker-indicator {
+    display: none !important;
+}
